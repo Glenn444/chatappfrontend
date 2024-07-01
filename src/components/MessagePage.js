@@ -104,7 +104,7 @@ const MessagePage = () => {
         }) 
         
         socketConnection.on('message',(data)=>{
-          console.log('message data',data)
+         // console.log('message data',data)
           setAllMessage(data)
         })
 
@@ -113,7 +113,7 @@ const MessagePage = () => {
   },[socketConnection,params?.userId,user])
 
   const handleOnChange = (e)=>{
-    const { name, value} = e.target
+    const { value} = e.target
 
     setMessage(preve => {
       return{
@@ -188,11 +188,12 @@ const MessagePage = () => {
                     {
                       allMessage.map((msg,index)=>{
                         return(
-                          <div className={` p-1 py-1 rounded w-fit max-w-[280px] md:max-w-sm lg:max-w-md ${user._id === msg?.msgByUserId ? "ml-auto bg-teal-100" : "bg-white"}`}>
+                          <div key={index} className={` p-1 py-1 rounded w-fit max-w-[280px] md:max-w-sm lg:max-w-md ${user._id === msg?.msgByUserId ? "ml-auto bg-teal-100" : "bg-white"}`}>
                             <div className='w-full relative'>
                               {
                                 msg?.imageUrl && (
                                   <img 
+                                    alt='background'
                                     src={msg?.imageUrl}
                                     className='w-full h-full object-scale-down'
                                   />
