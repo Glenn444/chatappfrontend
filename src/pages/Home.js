@@ -18,9 +18,11 @@ const Home = () => {
     try {
         const URL = `${process.env.REACT_APP_BACKEND_URL}/api/user-details`
         const response = await axios({
+          method:'get',
           url : URL,
-          withCredentials : true
-        }, {timeout:5000});
+          timeout:9000,
+          withCredentials : true,
+        });
         console.log("User response",response.data.data);
         dispatch(setUser(response.data.data))
 
