@@ -20,7 +20,7 @@ const Home = () => {
         const response = await axios({
           url : URL,
           withCredentials : true
-        })
+        }, {timeout:5000});
         console.log("User response",response.data.data);
         dispatch(setUser(response.data.data))
 
