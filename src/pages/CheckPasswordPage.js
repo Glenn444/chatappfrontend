@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { IoClose } from "react-icons/io5";
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import uploadFile from '../helpers/uploadFile';
 import axios from 'axios'
 import toast from 'react-hot-toast';
-import { PiUserCircle } from "react-icons/pi";
 import Avatar from '../components/Avatar';
 import { useDispatch } from 'react-redux';
-import { setToken, setUser } from '../redux/userSlice';
+import { setToken } from '../redux/userSlice';
 
 const CheckPasswordPage = () => {
   const [data,setData] = useState({
@@ -22,7 +19,7 @@ const CheckPasswordPage = () => {
     if(!location?.state?.name){
       navigate('/email')
     }
-  },[])
+  },[location?.state?.name, navigate])
 
   const handleOnChange = (e)=>{
     const { name, value} = e.target

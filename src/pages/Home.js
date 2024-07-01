@@ -1,5 +1,5 @@
 import axios from 'axios'
-import React, { useEffect } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { logout, setOnlineUser, setSocketConnection, setUser } from '../redux/userSlice'
@@ -14,7 +14,7 @@ const Home = () => {
   const location = useLocation()
 
   console.log('user',user)
-  const fetchUserDetails = async()=>{
+  const fetchUserDetails = useCallback(async()=>{
     try {
         const URL = `${process.env.REACT_APP_BACKEND_URL}/api/user-details`
         const response = await axios({
@@ -32,31 +32,34 @@ const Home = () => {
     } catch (error) {
         console.log("error",error)
     }
-  }
+  }, [dispatch, navigate])
 
   useEffect(()=>{
     fetchUserDetails()
-  },[])
+  },[fetchUserDetails])
 
   /***socket connection */
-  useEffect(()=>{
-    const socketConnection = io(process.env.REACT_APP_BACKEND_URL,{
-      auth : {
-        token : localStorage.getItem('token')
+  const socketConnection = useCallback(() => {
+    const socket = io(process.env.REACT_APP_BACKEND_URL, {
+      auth: {
+        token: localStorage.getItem('token'),
       },
-    })
-
-    socketConnection.on('onlineUser',(data)=>{
-      //console.log(data)
-      dispatch(setOnlineUser(data))
-    })
-
-    dispatch(setSocketConnection(socketConnection))
-
-    return ()=>{
-      socketConnection.disconnect()
-    }
-  },[])
+    });
+  
+    socket.on('onlineUser', (data) => {
+      dispatch(setOnlineUser(data));
+    });
+  
+    dispatch(setSocketConnection(socket));
+  
+    return () => {
+      socket.disconnect();
+    };
+  }, [dispatch]);
+  
+  useEffect(() => {
+    socketConnection();
+  }, [socketConnection]);
 
 
   const basePath = location.pathname === '/'
