@@ -22,6 +22,9 @@ const Home = () => {
           url : URL,
           timeout:9000,
           withCredentials : true,
+          headers : {
+            'Authorization' : `Bearer ${localStorage.getItem('token')}`
+          }
         });
         console.log("User response",response.data.data);
         dispatch(setUser(response.data.data))
