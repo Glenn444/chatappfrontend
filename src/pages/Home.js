@@ -13,7 +13,8 @@ const Home = () => {
   const navigate = useNavigate()
   const location = useLocation()
 
-  console.log('user',user)
+  //console.log('user',user)
+
   const fetchUserDetails = useCallback(async()=>{
     try {
         const URL = `${process.env.REACT_APP_BACKEND_URL}/api/user-details`
@@ -41,7 +42,10 @@ const Home = () => {
 
   useEffect(()=>{
     fetchUserDetails()
-  },[fetchUserDetails])
+    if (!user || !user.token){
+      navigate('/email')
+    }
+  },[fetchUserDetails, navigate, user])
 
   /***socket connection */
   const socketConnection = useCallback(() => {
