@@ -21,7 +21,7 @@ const Home = () => {
           url : URL,
           withCredentials : true
         })
-
+        console.log("User response",response.data.data);
         dispatch(setUser(response.data.data))
 
         if(response.data.data.logout){
